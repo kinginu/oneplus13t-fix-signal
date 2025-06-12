@@ -1,0 +1,49 @@
+name: Release Magisk Module
+
+# Define when this workflow runs
+on:
+  push:
+    tags:
+      - 'v*' # Runs when a tag starting with 'v' (e.g., v1.0, v2.0.1) is pushed
+
+jobs:
+  build:
+    # Run on the latest Ubuntu environment
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Check out the repository's code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Get module version from module.prop (optional but convenient)
+      - name: Get module version from module.prop
+        id: get_version
+        # Read the 'version=' line from module.prop and set it as an environment variable
+        run: echo "version_name=$(grep -oP 'version=\K.*' module/module.prop)" >> $GITHUB_ENV
+
+      # 3. Package the Magisk module into a ZIP file
+      - name: Zip Magisk Module
+        run: |
+          # Move into the 'module' directory to zip its contents.
+          # This ensures the 'module' directory itself is not included in the zip archive's root.
+          cd module
+          zip -r9 ../oneplus13t-fix-signal-${{ env.version_name }}.zip .
+
+      # 4. Create a GitHub Release and upload the ZIP file
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # Files to include in the release.
+          files: |
+            *.zip
+          
+          # Set to true to create a draft release.
+          draft: false
+          
+          # Set to true to mark as a pre-release.
+          prerelease: false
+          
+          # The release name will default to the tag name.
+          # The body can be auto-generated or set manually. For example:
+          # body: "Release of version ${{ env.version_name }}"
