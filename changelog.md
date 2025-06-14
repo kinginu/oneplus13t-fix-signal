@@ -1,3 +1,3 @@
-## 1.0.1 (2025-06-14)
+## 1.0.2 (2025-06-14)
 
-- Update for OnePlus 13T.
+- Deleted action.sh.
