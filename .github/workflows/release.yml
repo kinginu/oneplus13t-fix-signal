@@ -1,49 +1,33 @@
-name: Release Magisk Module
+name: Create Release
 
-# Define when this workflow runs
 on:
   push:
     tags:
-      - 'v*' # Runs when a tag starting with 'v' (e.g., v1.0, v2.0.1) is pushed
+      - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
-  build:
-    # Run on the latest Ubuntu environment
+  build-and-release:
+    name: Build and Release
     runs-on: ubuntu-latest
-    
     steps:
-      # 1. Check out the repository's code
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Get module version from module.prop (optional but convenient)
-      - name: Get module version from module.prop
-        id: get_version
-        # Read the 'version=' line from module.prop and set it as an environment variable
-        run: echo "version_name=$(grep -oP 'version=\K.*' module/module.prop)" >> $GITHUB_ENV
+      - name: Get version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
 
-      # 3. Package the Magisk module into a ZIP file
-      - name: Zip Magisk Module
-        run: |
-          # Move into the 'module' directory to zip its contents.
-          # This ensures the 'module' directory itself is not included in the zip archive's root.
-          cd module
-          zip -r9 ../oneplus13t-fix-signal-${{ env.version_name }}.zip .
+      - name: List files in the repository
+        run: ls -R
+        
+      - name: Zip module
+        run: (cd module && zip -r ../oneplus13t-fix-signal-${{ env.VERSION }}.zip .)
 
-      # 4. Create a GitHub Release and upload the ZIP file
-      - name: Create GitHub Release
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          # Files to include in the release.
-          files: |
-            *.zip
-          
-          # Set to true to create a draft release.
-          draft: false
-          
-          # Set to true to mark as a pre-release.
-          prerelease: false
-          
-          # The release name will default to the tag name.
-          # The body can be auto-generated or set manually. For example:
-          # body: "Release of version ${{ env.version_name }}"
+          files: oneplus13t-fix-signal-${{ env.VERSION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
