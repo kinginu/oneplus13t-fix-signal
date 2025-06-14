@@ -1,4 +1,6 @@
-# oneplus13t-fix-signal
+# OnePlus 13T Signal Fix for OxygenOS 15
+
+This is a personal, experimental module for a pre-release device and software. Use at your own risk.
 
 Fix signal and bootloop for OnePlus 13T CN on OxygenOS 15.
 This repository is a fork of [fix-signal-oneplus13](https://github.com/K58/fix-signal-oneplus13).
@@ -28,12 +30,14 @@ Make sure you have this module installed before OTA updates.
 > This module will patch `dtbo` partition to fix bootloop.<br>
 > DO NOT lock the bootloader with modified `dtbo` (or any other partition) in **any** slot.
 
-----
+
+## Important Notes
+- Prerequisites: You will likely need an unlocked bootloader and root access (e.g., Magisk) to apply this fix.
+
 
 ## Thanks to
 
 - [@koaaN](https://xdaforums.com/m/koaan.3433581/)
-
 - [@docnok63](https://xdaforums.com/m/docnok63.4967345/)
-
 - [rapperskull](https://github.com/rapperskull)
+- [K58](https://github.com/K58)
