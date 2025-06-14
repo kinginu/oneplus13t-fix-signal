@@ -40,4 +40,4 @@ Make sure you have this module installed before OTA updates.
 - [@koaaN](https://xdaforums.com/m/koaan.3433581/)
 - [@docnok63](https://xdaforums.com/m/docnok63.4967345/)
 - [rapperskull](https://github.com/rapperskull)
-- [K58](https://github.com/K58)
+- [Jonas Salo (K58)](https://github.com/K58)
